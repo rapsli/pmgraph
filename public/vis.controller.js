@@ -383,16 +383,15 @@ function drawNiceBox(data) {
         }
 
         var deadLineDangerColor = "black";
-        if (data[i].deadline != undefined && data[i].deadline.inDanger == "true" && data[i].deadline.date != undefined) {
+        if (data[i].deadline != undefined && data[i].deadline.inDanger == true && data[i].deadline.date != undefined) {
             deadLineDangerColor = 'red';
         }
 
-
-        var rectStyle = "fill:" + color + ";stroke-linecap:round;stroke-linejoin:round;stroke-width:1;stroke:#000;";
+        var rectStyle = "fill:" + color + ";stroke-linecap:round;stroke-linejoin:round;stroke-width:1;stroke:" + deadLineDangerColor + ";";
         var dur = '<span style="color:#000;"><strong>D: ' + data[i].duration + 'w</strong></span>';
-        if (data[i].duration == 0 || deadLineDangerColor == 'red') {
-            rectStyle = "fill:" + color + ";stroke-width:4;stroke:" + deadLineDangerColor + ";";
-            //dur = "";
+        
+        if (data[i].duration == 0) {
+            rectStyle = "fill:" + color + ";stroke-linecap:round;stroke-linejoin:round;stroke-width:4;stroke:" + deadLineDangerColor + ";";
         }
 
         if (data[i].duration == 0) {
