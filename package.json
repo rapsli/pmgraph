@@ -1,0 +1,25 @@
+{
+  "name": "PM-Graph",
+  "version": "1.0.0",
+  "description": "Project Network Graph",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Raphael Schär",
+  "license": "MIT",
+  "dependencies": {
+    "bucker": "^1.1.1",
+    "hapi": "^13.3.0",
+    "hapi-auth-cookie": "^6.1.1",
+    "hapi-sanitize-payload": "^1.1.0",
+    "hoek": "^3.0.4",
+    "inert": "^3.2.0",
+    "nedb": "^1.8.0",
+    "nunjucks": "2.4.x",
+    "nunjucks-hapi": "^2.1.0",
+    "require-hapiroutes": "^0.1.9",
+    "vis": "4.15.x",
+    "vision": "^4.1.0"
+  }
+}

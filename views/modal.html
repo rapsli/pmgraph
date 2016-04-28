@@ -1,0 +1,152 @@
+<div class="cd-panel from-right">
+  <div class="cd-panel-container">
+    <div class="cd-panel-content" id="detailsModal">
+      <header class="cd-panel-header">
+        <h4>Project: <span id="project-title" data-title="{{projectName}}">{{projectName}}</span></h4>
+      </header>
+      <p>Task: <span class="title" id="node-title" data-title=""></span></p>
+      
+      <div id="task-progress">
+        <p>Progress:</p>
+        <div class="task-progress radio">
+          <label>
+            <input type="radio" name="optionsProgres" id="optionsProgress-notstarted" value="not-started" class="node-input-data">
+            Not started lazy bum
+          </label>
+        </div>
+        <div class="radio task-progress">
+          <label>
+            <input type="radio" name="optionsProgres" id="optionsProgress-inprogres" value="in-progress" class="node-input-data">
+            Working on it
+          </label>
+        </div>
+        <div class="radio task-progress">
+          <label>
+            <input type="radio" name="optionsProgres" id="optionsProgress-completed" value="completed" class="node-input-data">
+            All done
+          </label>
+        </div>
+        <div class="radio task-progress">
+          <label>
+            <input type="radio" name="optionsProgres" id="optionsProgress-problem" value="problem" class="node-input-data">
+            Houston we have a problem
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-inline">
+        <div class="form-group" style="width:49%">
+          <label for="duration" class="control-label">Duration in weeks</label>
+          <select class="form-control node-input-data" name="duration" id="duration"  style="width:100%">
+            <option value="0">Milestone</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+          </select>
+        </div>
+        
+        <div class="form-group" style="width:49%">
+          <label for="deadline" class="control-label">Deadline <span class="glyphicon glyphicon-remove" id="removeDate"></span></label>
+          <input type='text' class="form-control node-input-data" name="deadline" id='deadline' style="width:100%"/>
+        </div>
+      </div>
+      
+      <h4 style="margin-top:10px">Tasks <span class="glyphicon glyphicon-plus" id="add-new-task"></span></h4>
+      <div id="tasks">
+      </div>
+      
+      </div> <!-- cd-panel-content -->
+      </div> <!-- cd-panel-container -->
+      </div> <!-- cd-panel -->
+      <!-- Modal -->
+      <!--
+      <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Project: <span id="project-title" data-title="{{projectName}}">{{projectName}}</span></h4>
+            </div>
+            <div class="modal-body">
+              <p>Task: <span class="title" id="node-title" data-title=""></span></p>
+              
+              <div id="task-progress">
+                <p>Progress:</p>
+                <div class="task-progress radio">
+                  <label>
+                    <input type="radio" name="optionsProgres" id="optionsProgress-notstarted" value="not-started">
+                    Not started lazy bum
+                  </label>
+                </div>
+                <div class="radio task-progress">
+                  <label>
+                    <input type="radio" name="optionsProgres" id="optionsProgress-inprogres" value="in-progress">
+                    Working on it
+                  </label>
+                </div>
+                <div class="radio task-progress">
+                  <label>
+                    <input type="radio" name="optionsProgres" id="optionsProgress-completed" value="completed">
+                    All done
+                  </label>
+                </div>
+                <div class="radio task-progress">
+                  <label>
+                    <input type="radio" name="optionsProgres" id="optionsProgress-problem" value="problem">
+                    Houston we have a problem
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="duration" class="control-label">Duration in weeks</label>
+                <select class="form-control" name="duration" id="duration">
+                  <option value="0">unknown</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="earliestStartDaten" class="control-label">Earliest start date</label>
+                <input type='text' class="form-control" name="earliestStartDaten" id='earliestStartDate' />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      -->
+
+      <script type="text/javascript">
+
+        jQuery(document).ready(function($){
+          $('.cd-btn').on('click', function(event){
+            event.preventDefault();
+            $('.cd-panel').addClass('is-visible');
+          });
+          $('.cd-panel').on('click', function(event){
+            if( $(event.target).is('.cd-panel') || $(event.target).is('.cd-panel-close') ) { 
+              $('.cd-panel').removeClass('is-visible');
+              event.preventDefault();
+            }
+          });
+        });
+      </script>

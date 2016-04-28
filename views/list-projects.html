@@ -1,0 +1,19 @@
+<a href="#" id="addNewProject">New Project</a>
+<table class="table table-bordered">
+	<thead> 
+		<tr> 
+			<th>ID</th> 
+			<th>Project Name</th> 
+			<th>Actions</th>
+		</tr> 
+	</thead> 
+	<tbody> 
+		{% for row in projects %}
+			<tr> 
+				<td><a href="/projects/{{row._id}}">{{row._id}}</a></td> 
+				<td><a href="/projects/{{row._id}}">{{row.projectName}}</a></td> 
+				<td><a href="/projects/remove/{{row._id}}"><span class="glyphicon glyphicon-remove"></span></a></td> 
+			</tr> 
+		{% endfor %}
+	</tbody>
+</table>

@@ -1,0 +1,65 @@
+.cd-panel {
+	/*...*/
+  	visibility: hidden;
+	transition: visibility 0s 0.6s;
+}
+ 
+.cd-panel.is-visible {
+	visibility: visible;
+	transition: visibility 0s 0s;
+}
+ 
+.cd-panel-container {
+	/*...*/
+	position: fixed;
+	width: 330px;
+	top: 0;
+	right: 0;
+
+	padding:15px;
+	margin-right: 10px;
+	margin-top: 55px;
+ 
+	transition-property: transform;
+	transition-duration: 0.3s;
+	transition-delay: 0.3s;
+	border-radius: 10px;
+ 
+ 	transform: translate3d(100%, 0, 0);
+
+ 	background: #999/*rgba(0, 0, 0, 0.4)*/;
+}
+
+.cd-panel-content h4{
+	margin-top: 0;
+}
+ 
+.is-visible .cd-panel-container {
+	transform: translate3d(0, 0, 0);
+	transition-delay: 0s;
+}
+
+#mynetwork {
+	margin-top: 50px;
+}
+
+div.vis-network div.vis-manipulation {
+	background-color: none;
+	background:none;
+}
+
+.overview li {
+	width: 200px;
+    float: left;
+    height: 50px;
+    list-style: none;
+}
+
+#tasks .del-task {
+	font-size: 8px;
+	color: #800000;
+}
+
+#tasks .closed {
+	text-decoration: line-through;
+}
