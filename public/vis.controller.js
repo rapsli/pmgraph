@@ -417,7 +417,6 @@ function drawNiceBox(data) {
             '</foreignObject>' +
             '</svg>'
 
-            console.log(box);
         var img = new Image();
         var svg = new Blob([box], {
             type: 'image/svg+xml;charset=utf-8'
