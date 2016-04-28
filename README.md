@@ -6,6 +6,8 @@ This is still very early Alpha Phase and very ugly quick and dirty code ;)
 
 Demo can be found here: http://pmgraph-demo.rapsli.ch/. Data will reset every day at midnight
 
+<img alt="Screenshot of PM Graph" src="https://raw.githubusercontent.com/rapsli/pmgraph/gh-pages/images/screenshot.png" />
+
 Licence
 =======
 Please note that Simple PM is relying on other software not for deployment simplicity have been included in the source code. These are:
