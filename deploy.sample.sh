@@ -1,6 +1,6 @@
 cd /var/www/pm-graph                                                                                               
 git reset --hard origin/master  
-git clean -f  #this removes all files that are not in git
+#git clean -f  #this removes all files that are not in git
 git pull  
 git checkout master 
 
