@@ -6,12 +6,15 @@ module.exports.routes = [{
     config: {
         handler: function(request, reply) {
             var projects = projectStore.getProject(request.params.id, function(err, doc) {
-                if (doc != null) {
+                if (err) {
+                    reply(err)
+                }
+                else if (doc != null) {
                     //console.log("fetch one", doc)
-                    reply(doc);
+                    reply(doc, null);
                 }
                 else {
-                    reply("error");
+                    reply("Etwas stimmt nicht");
                 }
             });
         }

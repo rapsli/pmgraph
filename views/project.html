@@ -56,8 +56,9 @@
 
 
     <script type="text/javascript">
+    var projectid = "{{_id}}";
       //http://visjs.org/docs/data/dataset.html?keywords=dataset
-      var project = {
+      /*var project = {
         _id: "{{_id}}",
         projectName: "{{projectName}}",
         nodes: new vis.DataSet({{nodes| safe }}),
@@ -65,14 +66,17 @@
         {% if criticalPath %}
         ,criticalPath: {{criticalPath | safe}}
         {% endif %}
-      }
+      }*/
     </script>
     
 
     {% include "modal.html" %}
     
     <script type="text/javascript" src="/task.js"></script> 
+    <script type="text/javascript" src="/Project.js"></script> 
+    <script type="text/javascript" src="/visualization.js"></script> 
     <script type="text/javascript" src="/vis.controller.js"></script>
+    <script type="text/javascript" src="/index.js"></script>
 
     
 

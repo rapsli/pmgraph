@@ -14,14 +14,7 @@ var warningColor = "#f0ad4e";
 var DOMURL = window.URL || window.webkitURL || window;
 
 
-// create a network
-var container = document.getElementById('mynetwork');
 
-// provide the data in the vis format
-var data = {
-    nodes: project.nodes,
-    edges: project.edges
-};
 
 // a list of all tasks for that project. Structure is:
 // {projectid:"xxxxxx", tasks: [{subprojectid:"adfasdad", title:"title of task", status:"completed"}]}
@@ -31,54 +24,11 @@ taskStore.init();
 
 var activenode = "";
 
-var width = $(document).width();
-var height = $(document).height() - 70;
 
-var options = {
-    width: width + 'px',
-    height: height + 'px',
-    clickToUse: false,
-    edges: {
-        arrows: {
-            to: {
-                enabled: true
-            }
-        },
-        physics: true,
-        smooth: false,
-        color: "#666"
-    },
-    manipulation: {
-        enabled: true,
-        editEdge: false,
-        addNode: function(data, callback) {
-            delete data.label;
-            data.taskTitle = "New";
-            callback(data);
-        }
-    },
-    nodes: {
-        shape: 'box',
-        physics: false
-    },
-    physics: true
 
-};
 
-// initialize your network!
-var network = new vis.Network(container, data, options);
 
-// Set the coordinate system of Network such that it exactly
-// matches the actual pixels of the HTML canvas on screen
-// this must correspond with the width and height set for
-// the networks container element.
-network.moveTo({
-    position: {
-        x: 0,
-        y: 0
-    },
-    scale: 1,
-})
+
 
 
 
@@ -106,9 +56,7 @@ window.setInterval(function() {
     saveProject();
 }, 60000);
 
-network.on("dragEnd", function(params) {
-    saveProject();
-});
+
 
 $(window).on("beforeunload", function() {
     saveProject();
@@ -475,6 +423,7 @@ function prepareModalView(selectedNodeId) {
 $(document).ready(function() {
     loadProject();
     startFindingLongestPath();
+    
     /**
     closing the modal. We have to make sure that we take all the changes
     and store them persistantly
@@ -562,15 +511,7 @@ $(document).ready(function() {
     a double click. 
       TODO: we still have to ensure that only nodes are "double clickable". Currently you can also click edges
     */
-    network.on("click", function(params) {
-        if (params.nodes.length == 0) {
-            return false;
-        }
-        var selectedNodeId = params.nodes[0];
-        prepareModalView(selectedNodeId);
-        showDetailsModal();
-        activenode = selectedNodeId;
-    });
+    
 
     $('#showDetailsModal').on('click', function(e) {
         toggleDetailsModal();
