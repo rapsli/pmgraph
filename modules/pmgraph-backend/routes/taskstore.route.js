@@ -1,4 +1,4 @@
-var taskStore = require("../models/TaskStore.Model")
+var taskStore = require("../TaskStore.Model")
 
 module.exports.routes = [{
     method: 'POST',

@@ -1,4 +1,4 @@
-var projectStore = require("../models/ProjectStore.Model")
+var projectStore = require("../ProjectStore.Model")
 
 module.exports.routes = [{
     method: 'POST',
