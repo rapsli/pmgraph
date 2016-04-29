@@ -8,6 +8,12 @@ Demo can be found here: http://pmgraph-demo.rapsli.ch/. Data will reset every da
 
 <img alt="Screenshot of PM Graph" src="https://raw.githubusercontent.com/rapsli/pmgraph/gh-pages/images/screenshot.png" />
 
+Installation
+===========
+1. Clone the project
+* Install server dependencies: `npm install`
+* Run the local server: `node index.js`
+
 Features
 ========
 
