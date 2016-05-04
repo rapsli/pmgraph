@@ -15,13 +15,6 @@ var DOMURL = window.URL || window.webkitURL || window;
 
 
 
-
-// a list of all tasks for that project. Structure is:
-// {projectid:"xxxxxx", tasks: [{subprojectid:"adfasdad", title:"title of task", status:"completed"}]}
-// 
-var taskStore = new TaskStore(project._id, "#tasks");
-taskStore.init();
-
 var activenode = "";
 
 
@@ -49,22 +42,11 @@ project.nodes.on("update", function(params) {
     saveProject();
 });*/
 
-/**
- * makes it easier to save it every 30 seconds
- */
-window.setInterval(function() {
-    saveProject();
-}, 60000);
 
-
-
-$(window).on("beforeunload", function() {
-    saveProject();
-});
 
 
 function saveProject() {
-    var projectObject = {};
+    /*var projectObject = {};
 
     network.storePositions();
     projectObject._id = project._id;
@@ -86,7 +68,7 @@ function saveProject() {
         success: function(result) {
             console.log("saved Project successfully");
         }
-    });
+    });*/
 
     startFindingLongestPath();
 }
@@ -298,7 +280,7 @@ function updateProjectGui() {
     highlightCriticalPath(project.criticalPath.path);
 }
 
-function loadProject() {
+/*function loadProject() {
     $.ajax({
         type: "GET",
         url: '/api/v1/getproject/' + project._id,
@@ -306,8 +288,8 @@ function loadProject() {
             drawNiceBox(data.nodes);
         }
     });
-}
-
+}*/
+/*
 function drawNiceBox(data) {
     console.log("draw the nice boxes");
     if (!Array.isArray(data)) {
@@ -373,7 +355,7 @@ function drawNiceBox(data) {
         data[i].shape = 'image';
     }
     project.nodes.update(data);
-}
+}*/
 
 /**
  * prepare the details modal windows for displaying taks details
@@ -421,8 +403,8 @@ function prepareModalView(selectedNodeId) {
 }
 
 $(document).ready(function() {
-    loadProject();
-    startFindingLongestPath();
+    //loadProject();
+    //startFindingLongestPath();
     
     /**
     closing the modal. We have to make sure that we take all the changes
