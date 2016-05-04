@@ -2,8 +2,8 @@ class Project {
 
     /**
      * id - project id
-     * vis - the visualization library vis.js in order to 
-     */ 
+     * vis - the visualization library vis.js in order to
+     */
     constructor(id, vis) {
         this._id = id;
         this.projectIsLoaded = false;
@@ -12,12 +12,9 @@ class Project {
         this.nodes;
         this.projectIsLoaded;
         this.criticalPath;
-        
-        //we need the vis librariy
-        this.vis = vis;
 
         this.loadProjectData(this._id);
-        
+
 
         // a list of all tasks for that project. Structure is:
         // {projectid:"xxxxxx", tasks: [{subprojectid:"adfasdad", title:"title of task", status:"completed"}]}
@@ -34,30 +31,44 @@ class Project {
             success: function(data) {
                 self._id = data._id;
                 self.projectName = data.projectName;
-                self.edges = new self.vis.DataSet(data.edges);
-                self.nodes = new self.vis.DataSet(data.nodes);
+                //self.edges = new self.vis.DataSet(data.edges);
+                //self.nodes = new self.vis.DataSet(data.nodes);
+                self.edges = data.edges;
+                self.nodes = data.nodes;
                 self.projectIsLoaded = true;
             }
         });
     }
 
-    save() {
+    save(nodesAndEdges) {
+    	this.updateNodes(nodesAndEdges.nodes.get());
+    	this.updateEdges(nodesAndEdges.edges.get());
+
         var projectObject = {};
 
         //network.storePositions();
         projectObject._id = this._id;
         projectObject.projectName = this.projectName;
-        projectObject.nodes = this.nodes.get();
-        projectObject.edges = this.edges.get();
+        projectObject.nodes = this.getNodes();
+        projectObject.edges = this.getEdges();
         projectObject.criticalPath = this.criticalPath;
 
         for (var i = 0; i < projectObject.nodes.length; i++) {
             delete projectObject.nodes[i].image;
             projectObject.nodes[i].shape = 'box';
         }
+        $.ajax({
+            type: "POST",
+            url: '/projects/' + this._id,
+            data: JSON.stringify(projectObject),
+            dataType: 'json',
+            success: function(result) {
+                console.log("saved Project successfully");
+            }
+        });
     }
-    
-    startFindingLongestPath() {
+
+    findCriticalPath() {
         console.log("... finding longest path. Not yet implemented");
     }
 
@@ -74,15 +85,22 @@ class Project {
     }
 
     getNodes() {
-        return this.nodes.get();
-    }
-    
-    updateActivities(nodes){
-        this.nodes.update(nodes);
-    }
-    
-    updateEdges(edges) {
-        this.edges.update(edges);
+        return this.nodes;
     }
 
+    updateNodes(nodes) {
+        this.nodes = nodes;
+    }
+
+    updateEdges(edges) {
+        this.edges = edges;
+    }
+
+    getTaskStore() {
+    	return this.taskStore;
+    }
+
+    setProjectName(projectName) {
+    	this.projectName = projectName;
+    }
 }

@@ -5,17 +5,12 @@
     done: #5cb85c
 */
 
-var notStartedColor = "#eee";
-var inProgressColor = "#5bc0de";
-var doneColor = "#5cb85c";
-var warningColor = "#f0ad4e";
 
 //this is our node template
-var DOMURL = window.URL || window.webkitURL || window;
 
 
 
-var activenode = "";
+
 
 
 
@@ -133,6 +128,7 @@ function recursivelyFindCriticalPath(newRootNode, path, allPaths) {
 
 }
 
+/*
 function findRootNode() {
     var rootNode = {};
     var BreakExecption = {};
@@ -160,7 +156,7 @@ function findRootNode() {
     }
 
     return rootNode;
-}
+}*/
 
 function findLongestPath(allPaths) {
     var longestPath = "";
@@ -187,6 +183,7 @@ function findLongestPath(allPaths) {
     }
 }
 
+/*
 function highlightCriticalPath(criticalPath) {
 
     //reset existing critical path
@@ -220,6 +217,7 @@ function highlightCriticalPath(criticalPath) {
 
     }
 }
+*/
 
 function highlightDeadLinesInDanger(allPaths) {
     //reset existing critical path
@@ -272,13 +270,13 @@ function startFindingLongestPath() {
 
 
 
-function updateProjectGui() {
+/*function updateProjectGui() {
     var completionDate = moment().add(project.criticalPath.duration, 'weeks');
     var completionDateFormatted = completionDate.format("DD.MM.YYYY");
     $('#duration-view').html(project.criticalPath.duration + ' weeks - ' + completionDateFormatted);
 
     highlightCriticalPath(project.criticalPath.path);
-}
+}*/
 
 /*function loadProject() {
     $.ajax({
@@ -357,185 +355,3 @@ function drawNiceBox(data) {
     project.nodes.update(data);
 }*/
 
-/**
- * prepare the details modal windows for displaying taks details
- */
-function prepareModalView(selectedNodeId) {
-    var selectedNode = project.nodes.get(selectedNodeId);
-    $('#detailsModal #node-title').html(selectedNode.taskTitle);
-    $('#detailsModal #project-title').html(project.projectName);
-    $('#detailsModal #node-title').attr('data-nodeid', selectedNodeId);
-    $('#detailsModal #node-title').attr('data-title', selectedNode.taskTitle);
-
-    if (selectedNode.progress == null) {
-        $('#task-progress input:radio').prop("checked", false);
-    }
-    else {
-        $('#task-progress input:radio[value="' + selectedNode.progress + '"]').prop("checked", true);
-    }
-
-    //console.log("inspect clicked node", selectedNode);
-
-    if ((selectedNode.deadline != undefined) && (selectedNode.deadline.date != undefined) && (selectedNode.deadline.date != "Invalid date")) {
-        $('#deadline').val(moment(selectedNode.deadline.date).format("DD.MM.YYYY"));
-    }
-    else {
-        $('#deadline').val("");
-    }
-
-    $('#duration').val(0);
-    if (selectedNode.duration != null && selectedNode.duration != "") {
-        $('#duration').val(selectedNode.duration);
-    }
-
-    if ($('#node-title').attr('data-title') == "") {
-        $('#node-title').addClass('editable-empty');
-    }
-    else {
-        $('#node-title').removeClass('editable-empty');
-    }
-    
-    taskStore.render(selectedNodeId);
-    //$('#tasks').empty();
-    //$('#tasks').append(taskStore.render(selectedNodeId));
-    //taskStore.bindInlineEditing();
-
-}
-
-$(document).ready(function() {
-    //loadProject();
-    //startFindingLongestPath();
-    
-    /**
-    closing the modal. We have to make sure that we take all the changes
-    and store them persistantly
-  */
-    function getNewDataFromModalWindow() {
-        //save the task title
-        var nodeid = $('#detailsModal #node-title').attr('data-nodeid');
-        var node = project.nodes.get(nodeid)
-        node.taskTitle = $('#node-title').html();
-
-        //save the project title
-
-
-        var progress = $('#task-progress input:radio:checked').val();
-        node.progress = progress;
-
-        switch (progress) {
-            case "in-progress":
-                node.color = inProgressColor;
-                break;
-            case "completed":
-                node.color = doneColor;
-                break;
-            case "problem":
-                node.color = warningColor;
-                break;
-            default:
-                node.color = notStartedColor;
-        }
-
-        var deadline = $('#deadline').val();
-        node.deadline = {};
-        if (deadline != "") {
-            var date = moment(deadline, "DD.MM.YYYY");
-            node.deadline = {
-                date: date.toISOString()
-            };
-        }
-
-        var duration = $('#duration').val();
-        node.duration = duration;
-
-        drawNiceBox(node);
-        saveProject();
-    }
-
-
-    /**
-          changes to the title of a task
-        */
-    $('#node-title').editable({
-        type: 'text',
-        mode: "inline",
-        success: function(response, newValue) {
-            $('#node-title').html(newValue);
-            getNewDataFromModalWindow();
-        }
-    });
-
-    $('#node-title').on('shown', function(e, editable) {
-        editable.input.$input.val($('#node-title').attr('data-title'));
-    });
-
-    /**
-    changes to the title of a project
-  */
-    $('#project-title').editable({
-        type: 'text',
-        mode: "inline",
-        success: function(response, newValue) {
-            project.projectName = newValue;
-            saveProject();
-        }
-    });
-
-    $('#detailsModal .node-input-data').on('change', function(ev) {
-        getNewDataFromModalWindow();
-    });
-
-    $('#deadline').on('focusout', function(e) {
-        getNewDataFromModalWindow();
-    })
-
-    /**
-    a double click. 
-      TODO: we still have to ensure that only nodes are "double clickable". Currently you can also click edges
-    */
-    
-
-    $('#showDetailsModal').on('click', function(e) {
-        toggleDetailsModal();
-    });
-
-
-    $('#deadline').datetimepicker({
-        locale: 'de',
-        format: 'DD.MM.YYYY'
-    });
-
-    $("#removeDate").on("click", function(e) {
-        $('#deadline').val("");
-        getNewDataFromModalWindow();
-        return false;
-    });
-
-    $('#add-new-task').on('click', function(e) {
-        var newTask = new Task('', activenode)
-        //$('#tasks').append(newTask.render())
-
-        taskStore.addNewTask(newTask);
-    })
-
-});
-
-
-
-function showDetailsModal() {
-    $('.cd-panel').addClass('is-visible');
-    $('#showDetailsModal i').removeClass('glyphicon-eye-open');
-    $('#showDetailsModal i').addClass('glyphicon-eye-close');
-
-}
-
-function toggleDetailsModal() {
-    if ($('.cd-panel').hasClass('is-visible')) {
-        $('.cd-panel').removeClass('is-visible')
-        $('#showDetailsModal i').addClass('glyphicon-eye-open');
-        $('#showDetailsModal i').removeClass('glyphicon-eye-close');
-    }
-    else {
-        showDetailsModal();
-    }
-}
