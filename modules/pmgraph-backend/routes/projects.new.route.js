@@ -6,7 +6,7 @@ module.exports.routes = [{
     config: {
         handler: function(request, reply) {
             projectStore.newProject(request.payload);
-            reply("added");
+            reply("added").code(200);
         }
     }
 }]

@@ -19,7 +19,7 @@ class Project {
         // a list of all tasks for that project. Structure is:
         // {projectid:"xxxxxx", tasks: [{subprojectid:"adfasdad", title:"title of task", status:"completed"}]}
         // 
-        this.taskStore = new TaskStore(this.id, "#tasks");
+        this.taskStore = new TaskStore(this._id, "#tasks");
         this.taskStore.init();
     }
 
@@ -56,6 +56,7 @@ class Project {
         for (var i = 0; i < projectObject.nodes.length; i++) {
             delete projectObject.nodes[i].image;
             projectObject.nodes[i].shape = 'box';
+            delete projectObject.nodes[i].label
         }
         $.ajax({
             type: "POST",

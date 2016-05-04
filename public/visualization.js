@@ -24,13 +24,12 @@ class Visualization {
             },
             manipulation: {
                 enabled: true,
-                editEdge: false
-                /*,
-                                    addNode: function(data, callback) {
-                                        delete data.label;
-                                        data.taskTitle = "New";
-                                        callback(data);
-                                    }*/
+                editEdge: false,
+                addNode: function(data, callback) {
+                    delete data.label;
+                    data.taskTitle = "new";
+                    callback(data);
+                }
             },
             nodes: {
                 shape: 'box',
@@ -223,7 +222,7 @@ class Visualization {
         });
 
         $('#add-new-task').on('click', function(e) {
-            var newTask = new Task('',self.activenode)
+            var newTask = new Task('', self.activenode)
                 //$('#tasks').append(newTask.render())
             self.project.getTaskStore().addNewTask(newTask);
         })
@@ -360,16 +359,16 @@ class Visualization {
 
         switch (progress) {
             case "in-progress":
-                node.color = inProgressColor;
+                node.color = this.inProgressColor;
                 break;
             case "completed":
-                node.color = doneColor;
+                node.color = this.doneColor;
                 break;
             case "problem":
-                node.color = warningColor;
+                node.color = this.warningColor;
                 break;
             default:
-                node.color = notStartedColor;
+                node.color = this.notStartedColor;
         }
 
         var deadline = $('#deadline').val();
