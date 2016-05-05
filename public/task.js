@@ -35,6 +35,7 @@ var TaskStore = function(id, targetContainer) {
 		this.addTask(task);
 		this.render()
 		this.save();
+		return task;
 	}
 	
 	this.addTask = function(task) {
@@ -108,6 +109,8 @@ var TaskStore = function(id, targetContainer) {
 			self.removeTask(taskid);
 		});
 		
+		// updating the status of a tasked -> open or closed
+		// triggered by a html checkbox
 		$str.find('.task-status').on('click', function(e){
 			var taskid = $(this).attr('data-taskid');
 			if (this.checked) {
