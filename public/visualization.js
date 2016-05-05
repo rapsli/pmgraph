@@ -27,8 +27,17 @@ class Visualization {
                 editEdge: false,
                 addNode: function(data, callback) {
                     delete data.label;
-                    data.taskTitle = "new";
+                    var r = prompt("Name of activity?");
+                    if (r == "") {
+                        r = "New Activity";
+                    }
+                    data.taskTitle = r;
+                    data.duration = 1;
+
                     callback(data);
+                    self.project.save(self.nodesAndEdges);
+                    self.drawNiceBox();
+
                 }
             },
             nodes: {
@@ -165,12 +174,13 @@ class Visualization {
             self.activenode = selectedNodeId;
         });
 
+
         /**
          * makes it easier to save it every 30 seconds
          */
         window.setInterval(function() {
             self.project.save(self.nodesAndEdges);
-        }, 10000);
+        }, 60000);
 
         /**
           changes to the title of a task
@@ -521,7 +531,7 @@ class Visualization {
         this.nodesAndEdges.nodes.update(node)
         this.startFindingAndHighlightingCriticalPath();
         this.project.save(this.nodesAndEdges);
-        
+
         this.drawNiceBox(node);
 
     }
