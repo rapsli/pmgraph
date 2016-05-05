@@ -11,7 +11,7 @@
  
 .cd-panel-container {
 	/*...*/
-	position: fixed;
+	position: absolute;
 	width: 330px;
 	top: 0;
 	right: 0;
