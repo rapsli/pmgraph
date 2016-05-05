@@ -14,7 +14,6 @@ var TaskStore = function(id, targetContainer) {
 			type: "GET",
 			url: '/taskstore/' + this.projectid,
 			success: function(result) {
-				console.log("Init store: ", result)
 				if (result.taskList == undefined) {
 					return false;
 				}
@@ -25,7 +24,6 @@ var TaskStore = function(id, targetContainer) {
 				})
 			}
 		});
-		console.log("finish init: ", this)
 	}
 
 	this.removeTask = function(id) {
@@ -77,14 +75,13 @@ var TaskStore = function(id, targetContainer) {
 	}
 
 	this.render = function(selectedNode) {
-		console.log("current node: ", selectedNode)
 		if (selectedNode == undefined) {
 			selectedNode = currentNid;
 		}
 		else {
 			currentNid = selectedNode;
 		}
-console.log("task liste:", this.taskList)
+
 		$(targetContainer).empty();
 		for (var key in this.taskList) {
 			if (this.taskList[key].nid == selectedNode) {

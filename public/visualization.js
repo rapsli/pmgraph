@@ -73,7 +73,7 @@ class Visualization {
             scale: 1,
         })
 
-        this.project.findCriticalPath();
+        this.startFindingAndHighlightingCriticalPath();
         //this.updateProjectGui();
     }
 
@@ -206,7 +206,7 @@ class Visualization {
         })
 
         $('#showDetailsModal').on('click', function(e) {
-            toggleDetailsModal();
+            self.toggleDetailsModal();
         });
 
 
@@ -235,25 +235,36 @@ class Visualization {
     updateProjectGui() {
         var completionDate = moment().add(this.project.criticalPath.duration, 'weeks');
         var completionDateFormatted = completionDate.format("DD.MM.YYYY");
-        $('#duration-view').html(project.criticalPath.duration + ' weeks - ' + completionDateFormatted);
+        $('#duration-view').html(this.project.criticalPath.duration + ' weeks - ' + completionDateFormatted);
 
-        highlightCriticalPath(project.criticalPath.path);
+        this.highlightCriticalPath(this.project.criticalPath.path);
+    }
+
+    startFindingAndHighlightingCriticalPath() {
+
+        var rootNode = this.findRootNode();
+        var allPaths = this.getAllPaths(rootNode);
+        this.highlightDeadLinesInDanger(allPaths);
+        this.project.criticalPath = this.findCriticalPath(allPaths);
+        this.highlightDeadLinesInDanger(allPaths);
+
+        this.updateProjectGui();
     }
 
     highlightCriticalPath(criticalPath) {
         //reset existing critical path
-        var edges = this.project.getEdges();
+        var edges = this.nodesAndEdges.edges.get();
         for (var i = 0; i < edges.length; i++) {
             edges[i].shadow = {
                 enabled: false
             }
         }
 
-        this.project.edges.updateEdges(edges);
+        this.nodesAndEdges.edges.update(edges);
 
         for (var i = 0; i < criticalPath.length; i++) {
             if (criticalPath[i + 1] != "") {
-                var edges = project.edges.get({
+                var edges = this.nodesAndEdges.edges.get({
                     filter: function(edge) {
                         return (edge.from == criticalPath[i] && edge.to == criticalPath[i + 1]);
                     }
@@ -265,11 +276,40 @@ class Visualization {
                         size: 10,
                         enabled: true
                     }
-                    this.project.edges.updateEdges(cpEdge);
+                    this.nodesAndEdges.edges.update(cpEdge);
 
                 }
             }
 
+        }
+    }
+
+    findCriticalPath(allPaths) {
+        /*console.log("... finding longest path. Not yet implemented");
+        var rootNode = this.findRootNode();
+        var allPaths = this.getAllPaths(rootNode);
+        console.log("root node: ", rootNode)*/
+        var longestPath = "";
+        var longestPathDuration = 0;
+        for (var i = 0; i < allPaths.length; i++) {
+            var duration = 0;
+            for (var j = 0; j < allPaths[i].length; j++) {
+                var nodeId = allPaths[i][j];
+                var node = this.nodesAndEdges.nodes.get(nodeId);
+                if (node.progress != "completed") {
+                    duration = parseInt(duration) + parseInt(node.duration);
+                }
+
+            }
+
+            if (duration > longestPathDuration) {
+                longestPathDuration = duration;
+                longestPath = allPaths[i];
+            }
+        }
+        return {
+            duration: longestPathDuration,
+            path: longestPath
         }
     }
 
@@ -282,8 +322,8 @@ class Visualization {
         // Pretty funky, because it's not possible to break a forEach statement we have to use an exception ;)
         // nice workaround
         try {
-            this.project.nodes.forEach(function(node) {
-                var receiveNodes = self.project.edges.get({
+            this.nodesAndEdges.nodes.forEach(function(node) {
+                var receiveNodes = self.nodesAndEdges.edges.get({
                     filter: function(edge) {
                         return (edge.to == node.id);
                     }
@@ -301,6 +341,105 @@ class Visualization {
         }
 
         return rootNode;
+    }
+
+    getAllPaths(rootNode) {
+        var edges = this.nodesAndEdges.edges.get({
+            filter: function(edge) {
+                return (edge.from == rootNode.id);
+            }
+        });
+
+        var path = [];
+        var allPaths = []; //the collection of all the paths
+        path.push(rootNode.id);
+
+        for (var i = 0; i < edges.length; i++) {
+            var newRootNode = this.nodesAndEdges.nodes.get(edges[i].to);
+            var newPath = this.recursivelyFindCriticalPath(newRootNode, path, allPaths);
+        }
+
+        return allPaths;
+    }
+
+    /**
+     * [recursivelyFindCriticalPath description]
+     * @param  {[Object]} newRootNode [description]
+     * @param  {[array]} path        [description]
+     * @param  {[array]} allPaths    this is the array where we collect all possible paths.
+     * @return none
+     */
+    recursivelyFindCriticalPath(newRootNode, path, allPaths) {
+        if (path.length > 500) {
+            //throw "Endless loop (> 250)";
+            console.log("this is probably an endless loop")
+            return;
+        }
+
+        var newPath = [];
+        for (var i = 0; i < path.length; i++) { // we copy the array and don't want to have a reference to path
+            newPath.push(path[i]);
+        }
+        newPath.push(newRootNode.id); //this is the path for the current node
+
+        // get edges that leave this newRootNode
+        var edges = this.nodesAndEdges.edges.get({
+            filter: function(edge) {
+                return (edge.from == newRootNode.id);
+            }
+        });
+
+        if (edges.length == 0) { //if ther are no edges leaving from this node, then this is a leafe node
+            allPaths.push(newPath);
+        }
+
+        //console.log("path for node: " + newRootNode.label, newPath);
+
+        // go through all edges and continue our search for paths
+        for (var i = 0; i < edges.length; i++) {
+            var newRootNode = this.nodesAndEdges.nodes.get(edges[i].to);
+            this.recursivelyFindCriticalPath(newRootNode, newPath, allPaths);
+        }
+
+    }
+
+    highlightDeadLinesInDanger(allPaths) {
+        //reset existing critical path
+        var nodes = this.nodesAndEdges.nodes.get();
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].deadline == undefined) {
+                nodes[i].deadline = {
+                    inDanger: false
+                }
+            }
+            else {
+                nodes[i].deadline.inDanger = false;
+            }
+        }
+
+        this.nodesAndEdges.nodes.update(nodes);
+
+        for (var i = 0; i < allPaths.length; i++) {
+            var dur = 0;
+            for (var j = 0; j < allPaths[i].length; j++) {
+                var today = moment();
+                var n = this.nodesAndEdges.nodes.get(allPaths[i][j]);
+                if (n.progress != "completed") {
+                    dur = parseInt(n.duration) + dur;
+                    var projectedDate = today.add(dur, 'w');
+                    if (n.deadline != undefined) {
+                        if (projectedDate > moment(n.deadline.date)) {
+                            n.deadline.inDanger = true;
+                            //console.log("node is in danger", n);
+                            this.nodesAndEdges.nodes.update(n);
+                        }
+                    }
+
+                }
+
+
+            }
+        }
     }
 
     prepareModalView(selectedNodeId) {

@@ -69,9 +69,7 @@ class Project {
         });
     }
 
-    findCriticalPath() {
-        console.log("... finding longest path. Not yet implemented");
-    }
+
 
     getId() {
         return this._id;
