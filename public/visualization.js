@@ -233,8 +233,8 @@ class Visualization {
         });
 
         $('#add-new-task').on('click', function(e) {
-            var title = prompt("Title of the Task?")
-            var newTask = new Task(title, self.activenode)
+            var title = prompt("Title of the Task?");
+            var newTask = new Task(title, self.activenode);
             newTask = self.project.getTaskStore().addNewTask(newTask);
         })
 
