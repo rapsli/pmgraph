@@ -184,7 +184,7 @@ class Visualization {
         }, 60000);
 
         /**
-          changes to the title of a task
+          changes to the title of an activity
         */
         $('#node-title').editable({
             type: 'text',
@@ -233,9 +233,9 @@ class Visualization {
         });
 
         $('#add-new-task').on('click', function(e) {
-            var newTask = new Task('', self.activenode)
-                //$('#tasks').append(newTask.render())
-            self.project.getTaskStore().addNewTask(newTask);
+            var title = prompt("Title of the Task?")
+            var newTask = new Task(title, self.activenode)
+            newTask = self.project.getTaskStore().addNewTask(newTask);
         })
 
         /*$(window).on("beforeunload", function() {
