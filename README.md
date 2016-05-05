@@ -24,6 +24,10 @@ Features
 * highlight deadlines in danger
 * Add tasks to activities
 
+Shortkeys
+=======
+ctrl + q - Add new task
+
 Licence
 =======
 Please note that Simple PM is relying on other software not for deployment simplicity have been included in the source code. These are:

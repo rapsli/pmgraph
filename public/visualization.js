@@ -236,6 +236,14 @@ class Visualization {
             var title = prompt("Title of the Task?");
             var newTask = new Task(title, self.activenode);
             newTask = self.project.getTaskStore().addNewTask(newTask);
+        });
+
+        $('body').keypress("q", function(e) {
+            if ($('.cd-panel').hasClass('is-visible')) {
+                if (e.ctrlKey) {
+                    $('#add-new-task').trigger('click')
+                }
+            }
         })
 
         /*$(window).on("beforeunload", function() {
