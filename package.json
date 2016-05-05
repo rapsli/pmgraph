@@ -1,6 +1,6 @@
 {
     "name": "PM-Graph",
-    "version": "1.2",
+    "version": "1.2.0",
     "description": "Project Network Graph",
     "main": "index.js",
     "scripts": {
