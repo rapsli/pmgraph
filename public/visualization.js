@@ -544,7 +544,7 @@ class Visualization {
             $('#showDetailsModal i').removeClass('glyphicon-eye-close');
         }
         else {
-            showDetailsModal();
+            this.showDetailsModal();
         }
     }
 
