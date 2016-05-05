@@ -33,6 +33,7 @@ class Visualization {
                     }
                     data.taskTitle = r;
                     data.duration = 1;
+                    data.progress = "not-started";
 
                     callback(data);
                     self.project.save(self.nodesAndEdges);
