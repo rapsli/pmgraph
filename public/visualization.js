@@ -285,10 +285,6 @@ class Visualization {
     }
 
     findCriticalPath(allPaths) {
-        /*console.log("... finding longest path. Not yet implemented");
-        var rootNode = this.findRootNode();
-        var allPaths = this.getAllPaths(rootNode);
-        console.log("root node: ", rootNode)*/
         var longestPath = "";
         var longestPathDuration = 0;
         for (var i = 0; i < allPaths.length; i++) {
