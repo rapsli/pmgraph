@@ -523,8 +523,11 @@ class Visualization {
         node.duration = duration;
 
         this.nodesAndEdges.nodes.update(node)
+        this.startFindingAndHighlightingCriticalPath();
         this.project.save(this.nodesAndEdges);
+        
         this.drawNiceBox(node);
+
     }
 
     showDetailsModal() {
