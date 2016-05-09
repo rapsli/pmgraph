@@ -428,6 +428,9 @@ class Visualization {
                 }
             }
             else {
+                if (typeof(nodes[i].deadline) != Object) { //fix for some legacy code
+                nodes[i].deadline = {};       
+                }
                 nodes[i].deadline.inDanger = false;
             }
         }
