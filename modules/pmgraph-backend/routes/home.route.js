@@ -1,4 +1,5 @@
 var projectStore = require("../ProjectStore.Model")
+var config = require("../../../config")
 
 module.exports.routes = [ {
     method: 'GET',
@@ -7,7 +8,8 @@ module.exports.routes = [ {
         handler: function(request, reply) {
             projectStore.getAllProjects(function(err, docs) {
                 reply.view("index.html", {
-                    projects: docs
+                    projects: docs,
+                    ga_code: config.ga_code
                 });
             });
         }

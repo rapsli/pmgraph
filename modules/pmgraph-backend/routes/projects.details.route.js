@@ -1,4 +1,5 @@
 var projectStore = require("../ProjectStore.Model")
+var config = require("../../../config")
 
 module.exports.routes = [{
     method: 'GET',
@@ -8,11 +9,8 @@ module.exports.routes = [{
             var projects = projectStore.getProject(request.params.id, function(err, doc) {
                 if (doc != null) {
                     reply.view("project.html", {
-                        //nodes: JSON.stringify(doc.nodes),
-                        //edges: JSON.stringify(doc.edges),
                         _id: doc._id,
-                        //projectName: doc.projectName,
-                        //criticalPath: JSON.stringify(doc.criticalPath)
+                        ga_code: config.ga_code
                     });
                 }
                 else {
