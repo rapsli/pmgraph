@@ -1,4 +1,8 @@
-cd /var/www/pm-graph                                                                                               
+cd /var/www/pm-graph            
+
+cp projects.db projects.db.bak
+cp tasks.db tasks.db.bak
+
 git reset --hard origin/master  
 #git clean -f  #this removes all files that are not in git
 git pull  
