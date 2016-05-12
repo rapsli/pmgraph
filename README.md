@@ -23,10 +23,11 @@ Features
 * Calculate end of project
 * highlight deadlines in danger
 * Add tasks to activities
+* Basic Google Analytics support
 
 Shortkeys
 =======
-ctrl + q - Add new task
+* ctrl + q - Add new task
 
 Licence
 =======
