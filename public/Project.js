@@ -4,7 +4,7 @@ class Project {
      * id - project id
      * vis - the visualization library vis.js in order to
      */
-    constructor(id, vis) {
+    constructor(id) {
         this._id = id;
         this.projectIsLoaded = false;
         this.projectName;
@@ -50,6 +50,7 @@ class Project {
         projectObject._id = this._id;
         projectObject.projectName = this.projectName;
         projectObject.nodes = this.getNodes();
+        
         projectObject.edges = this.getEdges();
         projectObject.criticalPath = this.criticalPath;
 

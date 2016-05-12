@@ -34,6 +34,7 @@ class Visualization {
                     data.taskTitle = r;
                     data.duration = 1;
                     data.progress = "not-started";
+                    data.theoreticalCompletionDate = "";
 
                     callback(data);
                     self.project.save(self.nodesAndEdges);
@@ -137,12 +138,18 @@ class Visualization {
                 }
             }
 
+            var projectedCompletionDate = "";
+            if (data[i].theoreticalCompletionDate != "") {
+                projectedCompletionDate = " - F: " +moment(data[i].theoreticalCompletionDate).format("DD.MM.YY");    
+            }
+            
+
             var box = '<svg xmlns="http://www.w3.org/2000/svg" width="150" height="70">' +
                 '<rect x="3" y="3" rx="10" ry="10" width="140" height="60" style="' + rectStyle + '"></rect>' +
                 '<foreignObject x="5" y="5" width="100%" height="100%">' +
                 '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px;font-family:verdana;">' +
                 '<span style="color:#000;padding-left:5px;padding-top:10px;">' + data[i].taskTitle + '</span><br/>' +
-                '<span style="padding-left:5px;">' + dur + deadline + '</span>' +
+                '<span style="padding-left:5px;">' + dur + deadline + projectedCompletionDate +'</span> ' +
                 '</div>' +
                 '</foreignObject>' +
                 '</svg>'
@@ -265,7 +272,7 @@ class Visualization {
         var allPaths = this.getAllPaths(rootNode);
         this.highlightDeadLinesInDanger(allPaths);
         this.project.criticalPath = this.findCriticalPath(allPaths);
-        this.highlightDeadLinesInDanger(allPaths);
+        //this.highlightDeadLinesInDanger(allPaths);
 
         this.updateProjectGui();
     }
@@ -314,6 +321,7 @@ class Visualization {
                 if (node.progress != "completed") {
                     duration = parseInt(duration) + parseInt(node.duration);
                 }
+
 
             }
 
@@ -428,7 +436,7 @@ class Visualization {
                 }
             }
             else {
-                if (typeof(nodes[i].deadline) != Object) { //fix for some legacy code
+                if (typeof(nodes[i].deadline) != "object") { //fix for some legacy code 
                 nodes[i].deadline = {};       
                 }
                 nodes[i].deadline.inDanger = false;
@@ -445,16 +453,30 @@ class Visualization {
                 if (n.progress != "completed") {
                     dur = parseInt(n.duration) + dur;
                     var projectedDate = today.add(dur, 'w');
+                    
+                    if (n.theoreticalCompletionDate != "") {
+                        var currentProjectedCompletionDate = moment(n.theoreticalCompletionDate);
+                        if (projectedDate > currentProjectedCompletionDate) {
+                            n.theoreticalCompletionDate = projectedDate;
+                        }
+                    }
+                    else {
+                        n.theoreticalCompletionDate = projectedDate;
+                    }
+
                     if (n.deadline != undefined) {
                         if (projectedDate > moment(n.deadline.date)) {
                             n.deadline.inDanger = true;
                             //console.log("node is in danger", n);
-                            this.nodesAndEdges.nodes.update(n);
                         }
                     }
 
+                    this.nodesAndEdges.nodes.update(n)
                 }
-
+                else {
+                    n.theoreticalCompletionDate = "";
+                    this.nodesAndEdges.nodes.update(n);
+                }
 
             }
         }
